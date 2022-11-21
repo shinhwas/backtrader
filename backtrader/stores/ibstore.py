@@ -1378,11 +1378,12 @@ class IBStore(with_metaclass(MetaSingleton, object)):
         # Lock access to the position dicts. This is called from main thread
         # and updates could be happening in the background
         with self._lock_pos:
-            position = self.positions[contract.m_conId]
-            if clone:
-                return copy(position)
+            if hasattr(contract, 'm_conId'):
+                position = self.positions[contract.m_conId]
+                if clone:
+                    return copy(position)
 
-            return position
+                return position
 
     @ibregister
     def updateAccountValue(self, msg):
