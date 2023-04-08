@@ -23,6 +23,11 @@ from __future__ import (absolute_import, division, print_function,
 
 import datetime
 import collections
+try:  # For new Python versions
+    collectionsAbc = collections.abc  # collections.Iterable -> collections.abc.Iterable
+except AttributeError:  # For old Python versions
+    collectionsAbc = collections  # Используем collections.Iterable
+
 import itertools
 import multiprocessing
 
@@ -330,7 +335,7 @@ class Cerebro(with_metaclass(MetaParams, object)):
         for elem in iterable:
             if isinstance(elem, string_types):
                 elem = (elem,)
-            elif not isinstance(elem, collections.Iterable):
+            elif not isinstance(elem, collectionsAbc.Iterable):  # Different functions will be called for different Python versions
                 elem = (elem,)
 
             niterable.append(elem)
